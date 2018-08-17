@@ -44,3 +44,16 @@
   text-overflow: ellipsis;
   overflow: hidden;
 }
+.local-result{
+  margin: 0;
+  padding: 0;
+  border: 1px solid #ccc;
+}
+.local-result li{
+  padding: 8px 10px;
+  border-bottom: 1px solid #ccc;
+  list-style: none;
+}
+.local-result li:last-child{
+  border: 0px;
+}

@@ -17,9 +17,14 @@ export default class SearchComp extends Component {
       }
      localData = [];
      isLocal = false;
+     isClicked = false;
     
       componentWillMount() {
         this.timer = null;
+        if(localStorage.searchquery)
+        {
+          this.localData = JSON.parse(localStorage.searchquery)
+        }
       }
 
      
@@ -31,9 +36,7 @@ export default class SearchComp extends Component {
         this.setState({
           query: this.search.value
         })
-        if(!this.isLocal){
-          this.timer = setTimeout(this.triggerChange, 3000);
-        }
+        this.timer = setTimeout(this.triggerChange, 2000);
       }
 
       handleKeyDown = (e) => {
@@ -48,15 +51,18 @@ export default class SearchComp extends Component {
           query: str
         })
         this.isLocal = false;
-        this.triggerChange();
+        this.isClicked = true;
+        SearchResultStore.getResult(str, this.dataReceived);
       }
 
       triggerChange = () => {
-        if(localStorage.searchquery && (JSON.parse(localStorage.searchquery).indexOf(this.state.query) < 0)){
-          this.localData.push(this.state.query)
+        if(!this.isClicked && (this.state.query.length > 0)){
+          if(localStorage.searchquery && (JSON.parse(localStorage.searchquery).indexOf(this.state.query) < 0)){
+            this.localData.push(this.state.query)
+          }
+          localStorage.setItem("searchquery",JSON.stringify(this.localData))
+          SearchResultStore.getResult(this.state.query, this.dataReceived);
         }
-        localStorage.setItem("searchquery",JSON.stringify(this.localData))
-        SearchResultStore.getResult(this.state.query, this.dataReceived);
       }
 
       dataReceived = (data) => {
@@ -65,6 +71,7 @@ export default class SearchComp extends Component {
           paginatedData : [],
           pageNo: 0
         })
+        this.isClicked = false;
         this.paginateData(this.state.pageNo,8,this.state.searchResult)
       }
      

@@ -2,9 +2,6 @@ import React, { Component } from 'react';
 import './App.css';
 
 export default class ResultComp extends Component {
-     constructor(props){
-         super(props);
-     }
      showDetails = (data) => {
          alert(data.title,data.owner)
      }
@@ -16,7 +13,7 @@ export default class ResultComp extends Component {
                             this.props.list.map((res,i) => {
                                 return (
                                     <div className="img-sec" key={i} onClick={(val) => this.showDetails(res)}>
-                                        <img src={"https://farm"+res.farm+".staticflickr.com/"+res.server+"/"+res.id+"_"+res.secret+"_q.jpg"}/> 
+                                        <img alt={res.title} src={"https://farm"+res.farm+".staticflickr.com/"+res.server+"/"+res.id+"_"+res.secret+"_q.jpg"}/> 
                                         <span className="img-sec-title">{res.title.length > 0 ? res.title : "Not available"}</span>
                                     </div>
                                 )
